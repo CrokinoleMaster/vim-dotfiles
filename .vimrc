@@ -524,3 +524,5 @@ hi CursorLine      ctermbg=237    cterm=none    guibg=#151718    gui=none
 :set guioptions-=m  "remove menu bar
 :set guioptions-=T  "remove toolbar
 
+" jsx
+let g:jsx_ext_required = 0
