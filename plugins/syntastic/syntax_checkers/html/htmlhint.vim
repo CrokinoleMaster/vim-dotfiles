@@ -1,7 +1,7 @@
 "============================================================================
-"File:        govet.vim
-"Description: Perform static analysis of Go code with the vet tool
-"Maintainer:  Kamil Kisiel <kamil@kamilkisiel.net>
+"File:        html.vim
+"Description: Syntax checking plugin for syntastic
+"Maintainer:  LCD 47 <lcd047 at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,37 +10,35 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_go_govet_checker')
+if exists('g:loaded_syntastic_html_htmlhint_checker')
     finish
 endif
-let g:loaded_syntastic_go_govet_checker = 1
+let g:loaded_syntastic_html_htmlhint_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_go_govet_GetLocList() dict
-    let makeprg = self.getExecEscaped() . ' vet'
+function! SyntaxCheckers_html_htmlhint_IsAvailable() dict
+    if !executable(self.getExec())
+        return 0
+    endif
+    return syntastic#util#versionIsAtLeast(self.getVersion(), [0, 9, 13])
+endfunction
 
-    let errorformat =
-        \ '%Evet: %.%\+: %f:%l:%c: %m,' .
-        \ '%W%f:%l: %m,' .
-        \ '%-G%.%#'
+function! SyntaxCheckers_html_htmlhint_GetLocList() dict
+    let makeprg = self.makeprgBuild({ 'args_before': '--format unix' })
 
-    " The go compiler needs to either be run with an import path as an
-    " argument or directly from the package directory. Since figuring out
-    " the proper import path is fickle, just cwd to the package.
+    let errorformat = '%f:%l:%c: %m'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'cwd': expand('%:p:h', 1),
-        \ 'defaults': {'type': 'w'} })
+        \ 'returns': [0, 1] })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'go',
-    \ 'name': 'govet',
-    \ 'exec': 'go' })
+    \ 'filetype': 'html',
+    \ 'name': 'htmlhint'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

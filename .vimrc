@@ -140,12 +140,12 @@ if has("autocmd")
     autocmd InsertLeave * :set relativenumber
 
     " Custom syntax for different languages
-    autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType json setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 ts=2 sts=2 sw=2 expandtab
-    autocmd FileType jade setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType less setlocal ts=2 sts=2 sw=2 expandtab
+    autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+    autocmd FileType json setlocal ts=4 sts=4 sw=4 expandtab
+    autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=4 ts=4 sts=4 sw=4 expandtab
+    autocmd FileType jade setlocal ts=4 sts=4 sw=4 expandtab
+    autocmd FileType html setlocal ts=4 sts=4 sw=4 expandtab
+    autocmd FileType less setlocal ts=4 sts=4 sw=4 expandtab
 
     " Treat `.json` files as JavaScript
     " autocmd BufNewFile, BufRead *.json setfiletype json syntax=javascript
@@ -187,6 +187,27 @@ set statusline=%1*\ [%n]\ [%f]%m%r%h%w%y[%{&ff}:%{strlen(&fenc)?&fenc:'none'}]%=
 " ------------------------------------------------------------------------------
 " | Key Mappings                                                               |
 " ------------------------------------------------------------------------------
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+let g:syntastic_error_symbol = '❌'
+let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_style_warning_symbol = '💩'
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
 
 " Use a different mapleader (default is "\")
 let mapleader = ","
@@ -320,10 +341,6 @@ hi StartifySlash   ctermfg=240 guifg=#CD3F45
 hi StartifySpecial ctermfg=240 guifg=#CD3F45
 hi StartifyHeader  ctermfg=114 guifg=#4CB5DC
 hi StartifyFooter  ctermfg=240 guifg=#A36FC5
-
-"airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'molokai'
 
 "tmux
 if exists('$TMUX')
@@ -472,7 +489,6 @@ nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
-inoremap <esc> <nop>
 
 nnoremap j gj
 nnoremap k gk
@@ -526,3 +542,5 @@ hi CursorLine      ctermbg=237    cterm=none    guibg=#151718    gui=none
 
 " jsx
 let g:jsx_ext_required = 0
+
+set foldlevel=99
