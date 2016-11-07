@@ -547,3 +547,7 @@ hi CursorLine      ctermbg=237    cterm=none    guibg=#151718    gui=none
 let g:jsx_ext_required = 0
 
 set foldlevel=99
+
+
+" ctrlp
+set wildignore+=*/tmp/*,*/node_modules/*,*.so,*.swp,*.zip
